@@ -11,5 +11,10 @@ public class DesktopLauncher {
 		config.setTitle("Tetris");
 		config.setWindowedMode(ScoreMap.sizeX, ScoreMap.sizeY);
 		new Lwjgl3Application(new Tetris(), config);
+
+		// D - Движение направо
+		// S - Движение вниз
+		// A - Движение влево
+		// R - Поворот фигуры
 	}
 }
