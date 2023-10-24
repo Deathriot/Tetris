@@ -4,13 +4,14 @@ package com.mygdx.game.model;
 public class DamagedShape extends Shape {
 
     public boolean shouldBeDead = false;
+
     public DamagedShape(Shape shape, int y) {
         super(shape.texture, shape.startX);
 
         int deadCount = 0;
         id = shape.id;
 
-        for (int i = 0; i < blocks.length; i++ ) {
+        for (int i = 0; i < blocks.length; i++) {
             if (shape.getBlocks()[i].y == y) {
                 blocks[i] = new SoloBlock(texture, -50, -50); // Удаленные блоки прячем за карту
                 deadCount++;
@@ -20,13 +21,13 @@ public class DamagedShape extends Shape {
             blocks[i] = shape.getBlocks()[i];
         }
 
-        if(deadCount == blocks.length){
+        if (deadCount == blocks.length) {
             shouldBeDead = true;
         }
     }
 
     // Если все 4 блока уничтожены - фигуру необходимо удалять
-    public void checkDeath(){
+    public void checkDeath() {
         int deadCount = 0;
 
         for (SoloBlock block : blocks) {
@@ -35,7 +36,7 @@ public class DamagedShape extends Shape {
             }
         }
 
-        if(deadCount == blocks.length){
+        if (deadCount == blocks.length) {
             shouldBeDead = true;
         }
     }
@@ -43,20 +44,6 @@ public class DamagedShape extends Shape {
     @Override
     protected Shape getMySelf() {
         return this;
-    }
-    @Override
-    protected boolean isConnected(SoloBlock block) {
-        for(SoloBlock myBlock: blocks){
-            if(myBlock.x == -50){
-                continue;
-            }
-
-            if(block.y == myBlock.y + SoloBlock.size && block.x == myBlock.x){
-                return true;
-            }
-        }
-
-        return false;
     }
 
     @Override

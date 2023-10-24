@@ -10,7 +10,6 @@ import java.util.Random;
 
 public class ShapeGenerator {
     private static final Random RND = new Random();
-    private Texture currntTexture = generateTexture();
 
     public Shape generateShape() {
         Texture texture = generateTexture();

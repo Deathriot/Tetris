@@ -36,17 +36,21 @@ public class Drawer {
     void drawShapes(Set<Shape> shapes, SpriteBatch batch) {
         for (Shape shape : shapes) {
             for (SoloBlock block : shape.getBlocks()) {
+                if(block.x == - 50){
+                    continue;
+                }
                 batch.draw(block.texture, block.x, block.y, SoloBlock.size, SoloBlock.size);
             }
         }
     }
 
     void drawLinesInCorner(SpriteBatch batch){
-        int startX = InGameMap.mapSizeX;
-        int endX = ScoreMap.sizeX;
-        int startY = ScoreMap.sizeY - 250;
-        int endY = ScoreMap.sizeY;
         int lineSize = 20;
+
+        int startX = InGameMap.mapSizeX;
+        int endX = ScoreMap.sizeX - lineSize;
+        int startY = ScoreMap.sizeY - 250;
+        int endY = ScoreMap.sizeY - lineSize;
 
         for (int y = startY; y <= endY; y += 5) {
             for (int x = startX; x <= endX; x += 5) {
@@ -66,5 +70,4 @@ public class Drawer {
                     ,block.y - SoloBlock.size, SoloBlock.size, SoloBlock.size);
         }
     }
-
 }

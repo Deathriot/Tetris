@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.Map.InGameMap;
 import com.mygdx.game.control.DeadManager;
+import com.mygdx.game.control.Person;
 import com.mygdx.game.generator.ShapeGenerator;
 
 public abstract class Shape {
@@ -26,14 +27,10 @@ public abstract class Shape {
         Shape newShape = GENERATOR.generateShape();
 
         if (InGameMap.alert) {
-            for (Shape shape : InGameMap.getShapes()) {
-                for (SoloBlock block : shape.blocks) {
-                    for (SoloBlock newBlock : newShape.blocks) {
-                        if (block.x == newBlock.x && block.y == newBlock.y) {
-                            DeadManager.lose = true;
-                            return newShape;
-                        }
-                    }
+            for (SoloBlock block : newShape.blocks) {
+                if (!InGameMap.isBlockEmpty[block.x / SoloBlock.size][block.y / SoloBlock.size]) {
+                    DeadManager.lose = true;
+                    return newShape;
                 }
             }
         }
@@ -62,8 +59,11 @@ public abstract class Shape {
     }
 
     public void moveShapeY(int amount) {
-        if (checkStop()) {
-            stop = true;
+        checkStop();
+
+        if (stop) {
+            stop = false;
+            Person.stop = true;
             InGameMap.addStoppedShape(getMySelf());
             return;
         }
@@ -79,16 +79,8 @@ public abstract class Shape {
                 return;
             }
 
-            for (Shape shape : InGameMap.getShapes()) {
-                for (SoloBlock shapeBlock : shape.getBlocks()) {
-                    if (shapeBlock.y > block.y) {
-                        continue;
-                    }
-
-                    if (shapeBlock.x == block.x && shapeBlock.y + SoloBlock.size == block.y) {
-                        return;
-                    }
-                }
+            if(!InGameMap.isBlockEmpty[block.x / SoloBlock.size][(block.y) / SoloBlock.size - 1]){
+                return;
             }
 
             block.y -= SoloBlock.size;
@@ -128,44 +120,42 @@ public abstract class Shape {
                 return false;
             }
 
-            for (Shape shape : InGameMap.getShapes()) {
-                for (SoloBlock block1 : shape.blocks) {
-                    if (block1.contains(block)) {
-                        return false;
-                    }
-                }
+            if(!InGameMap.isBlockEmpty[block.x / SoloBlock.size][block.y / SoloBlock.size]){
+                return false;
             }
         }
 
         return true;
     }
 
-    protected boolean checkStop() {
+    protected void checkStop() {
         for (SoloBlock block : blocks) {
-            if (block.y == 0) {
-                return true;
+
+            if(block.y % SoloBlock.size != 0){
+                stop = false;
+                return;
             }
 
-            for (Shape shape : InGameMap.getShapes()) {
-                if (shape.isConnected(block)) {
-                    return true;
-                }
+            if (block.y == 0) {
+                stop = true;
+                return;
+            }
+
+            if(!InGameMap.isBlockEmpty[block.x / SoloBlock.size][block.y / SoloBlock.size - 1]){
+                stop = true;
+                return;
             }
         }
-
-        return false;
     }
 
     protected abstract Shape getMySelf();
-
-    protected abstract boolean isConnected(SoloBlock block);
-
     public abstract void rotate();
 
     public SoloBlock[] getBlocks() {
         return blocks;
     }
-    public int getStartX(){
+
+    public int getStartX() {
         return startX;
     }
 

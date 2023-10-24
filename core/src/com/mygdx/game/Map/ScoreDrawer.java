@@ -36,11 +36,11 @@ public class ScoreDrawer {
     }
 
     private void drawScoreText(SpriteBatch batch){
-        batch.draw(scoreText, InGameMap.mapSizeX + SoloBlock.size, ScoreMap.sizeY - 10 * SoloBlock.size, 200, 200);
+        batch.draw(scoreText, InGameMap.mapSizeX + SoloBlock.size
+                ,ScoreMap.sizeY - 10 * SoloBlock.size, 200, 200);
     }
 
     private Texture getNumberImage(char number) {
-        System.out.println(number);
         switch (number) {
             case '1':
                 return one;

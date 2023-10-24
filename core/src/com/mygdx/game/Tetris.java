@@ -15,6 +15,8 @@ public class Tetris extends ApplicationAdapter {
     Shape nextShape;
     Person person;
     Drawer drawer;
+    int count = 0;
+    long sum = 0;
 
     @Override
     public void create() {
@@ -28,6 +30,9 @@ public class Tetris extends ApplicationAdapter {
 
     @Override
     public void render() {
+        long timeStart = System.nanoTime();
+        count ++;
+
         ScreenUtils.clear(1, 1, 1, 1);
         batch.begin();
 
@@ -43,6 +48,7 @@ public class Tetris extends ApplicationAdapter {
         person.update(batch);
         InGameMap.update(batch);
 
+
         if (InGameMap.nextShape) {
             person.changeShape(nextShape);
             nextShape = Shape.GenerateShape();
@@ -50,8 +56,16 @@ public class Tetris extends ApplicationAdapter {
         }
 
         batch.end();
-    }
 
+        long timeEnd = System.nanoTime();
+        sum += timeEnd - timeStart;
+
+        if(count == 600){
+            System.out.println(sum / 10);
+            count = 0;
+            sum = 0;
+        }
+    }
     @Override
     public void dispose() {
         batch.dispose();

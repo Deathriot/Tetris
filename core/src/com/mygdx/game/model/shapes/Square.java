@@ -23,19 +23,6 @@ public class Square extends Shape {
     protected Shape getMySelf() {
         return this;
     }
-    @Override
-    protected boolean isConnected(SoloBlock block) {
-        if (block.y != blocks[3].y + SoloBlock.size) {
-            return false;
-        }
-
-        for (SoloBlock shapeBlock : blocks) {
-            if (block.x == shapeBlock.x) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     @Override
     public void rotate() {

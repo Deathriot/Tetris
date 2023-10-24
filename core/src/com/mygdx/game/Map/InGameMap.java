@@ -15,8 +15,15 @@ public final class InGameMap {
     private static final Set<Shape> shapes = new HashSet<>();
     private final static TreeMap<Integer, Integer> fullLines = new TreeMap<>();
     private static Drawer drawer;
+    public final static boolean[][] isBlockEmpty = new boolean[10][20];
 
     public static void init(Drawer drawer1){
+        for(int i = 0; i < 20; i++){
+            for(int j = 0; j < 10; j++){
+                isBlockEmpty[j][i] = true;
+            }
+        }
+
         drawer = drawer1;
     }
 
@@ -33,16 +40,17 @@ public final class InGameMap {
 
     public static void addStoppedShape(Shape shape) {
         shapes.add(shape);
+        addShapeBlocked(shape);
         checkRemoveLine(shape);
+        //drawArray();
 
         if (fullLines.containsKey(850)) {
             alert = fullLines.get(850) > 0;
         }
 
         nextShape = true;
-
-        System.out.println(fullLines);
-        System.out.println(shapes);
+        //System.out.println(fullLines);
+        //System.out.println(shapes);
     }
 
     private static void shapeFall(int y) {
@@ -57,9 +65,11 @@ public final class InGameMap {
                         continue;
                     }
 
+                    isBlockEmpty[block.x / SoloBlock.size][block.y / SoloBlock.size] = true;
                     decreaseLineByBlock(block.y);
                     Shape.fallBlock(block);
                     increaseLineByBlock(block.y);
+                    isBlockEmpty[block.x / SoloBlock.size][block.y / SoloBlock.size] = false;
                 }
             }
         }
@@ -81,6 +91,10 @@ public final class InGameMap {
 
             final HashSet<Shape> destroyedShapes = new HashSet<>();
             final HashSet<DamagedShape> damagedShapes = new HashSet<>();
+
+            for(int i = 0; i < 10; i++){
+                isBlockEmpty[i][y / SoloBlock.size] = true;
+            }
 
             loop:
             for (Shape shape : shapes) {
@@ -140,8 +154,20 @@ public final class InGameMap {
     public static void reset() {
         shapes.clear();
         fullLines.clear();
+
+        for(int i = 0; i < 20; i++){
+            for(int j = 0; j < 10; j++){
+                isBlockEmpty[j][i] = true;
+            }
+        }
         alert = false;
         nextShape = true;
+    }
+
+    private static void addShapeBlocked(Shape shape){
+        for(SoloBlock block: shape.getBlocks()){
+            isBlockEmpty[block.x / SoloBlock.size][block.y / SoloBlock.size] = false;
+        }
     }
 
     private InGameMap() {

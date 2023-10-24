@@ -27,27 +27,12 @@ public class Line extends Shape {
     }
 
     @Override
-    protected boolean isConnected(SoloBlock block) {
-        if(block.y != blocks[0].y + SoloBlock.size){
-            return false;
-        }
-
-        for(SoloBlock shapeBlock: blocks){
-            if(block.x == shapeBlock.x){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
     public void rotate() {
         if(horizontal){
             rotateHorizontal();
         } else {
             rotateVertical();
         }
-        checkStop();
     }
 
     // Супер кривой поворот колбаски

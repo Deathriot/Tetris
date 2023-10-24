@@ -27,18 +27,6 @@ public class LShape extends Shape{
     }
 
     @Override
-    protected boolean isConnected(SoloBlock block) {
-        for(SoloBlock myBlock: blocks){
-
-            if(block.y == myBlock.y + SoloBlock.size && block.x == myBlock.x){
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    @Override
     public void rotate() {
         switch (rotatePosition){
             case 1:

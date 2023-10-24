@@ -5,9 +5,10 @@ import com.mygdx.game.Map.InGameMap;
 import com.mygdx.game.model.Shape;
 import com.mygdx.game.model.SoloBlock;
 
-public class ZetShape extends Shape{
+public class ZetShape extends Shape {
 
     private boolean horizontal;
+
     public ZetShape(Texture texture, int startX) {
         super(texture, startX);
 
@@ -29,32 +30,22 @@ public class ZetShape extends Shape{
     }
 
     @Override
-    protected boolean isConnected(SoloBlock block) {
-        for(SoloBlock myBlock: blocks){
-            if(block.y == myBlock.y + SoloBlock.size && block.x == myBlock.x){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
     public void rotate() {
-        if(horizontal){
+        if (horizontal) {
             rotateHorizontal();
         } else {
             rotateVertical();
         }
     }
 
-    private void rotateHorizontal(){
+    private void rotateHorizontal() {
         blocks[2].x += SoloBlock.size;
         blocks[2].y -= SoloBlock.size;
 
         //blocks[3].x += 0
         blocks[3].y -= 2 * SoloBlock.size;
 
-        if(!checkRotateIsCorrect()){
+        if (!checkRotateIsCorrect()) {
             blocks[2].x -= SoloBlock.size;
             blocks[2].y += SoloBlock.size;
 
@@ -71,14 +62,14 @@ public class ZetShape extends Shape{
         horizontal = false;
     }
 
-    private void rotateVertical(){
+    private void rotateVertical() {
         blocks[0].x -= SoloBlock.size;
         blocks[0].y -= SoloBlock.size;
 
         //blocks[3].x += 0
         blocks[3].y += 2 * SoloBlock.size;
 
-        if(!checkRotateIsCorrect()){
+        if (!checkRotateIsCorrect()) {
             blocks[0].x += SoloBlock.size;
             blocks[0].y += SoloBlock.size;
 

@@ -2,20 +2,22 @@ package com.mygdx.game.control;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.g2d.Gdx2DPixmap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.mygdx.game.model.Shape;
 import com.mygdx.game.model.SoloBlock;
 
 public final class Person {
     private final static int VELOCITYX = SoloBlock.size;
     private Shape shape;
+    public static boolean stop = false;
 
     public Person(Shape shape) {
         this.shape = shape;
     }
     public void update(SpriteBatch batch){
         int key = getKey();
-
         switch (key){
             case Input.Keys.D:
                 shape.moveShapeX(VELOCITYX);
@@ -31,8 +33,8 @@ public final class Person {
                 break;
         }
 
-        if(Shape.stop){
-            Shape.stop = false;
+        if(stop){
+            stop = false;
             return;
         }
 
