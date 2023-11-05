@@ -3,29 +3,20 @@ package com.mygdx.game;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.mygdx.game.Map.Drawer;
-import com.mygdx.game.Map.InGameMap;
-import com.mygdx.game.Map.ScoreMap;
+import com.mygdx.game.Map.Screen;
 import com.mygdx.game.control.DeadManager;
-import com.mygdx.game.control.Person;
-import com.mygdx.game.model.*;
+import com.mygdx.game.control.StartGameManager;
 
 public class Tetris extends ApplicationAdapter {
     SpriteBatch batch;
-    Shape nextShape;
-    Person person;
-    Drawer drawer;
+    Screen screen;
     int count = 0;
     long sum = 0;
 
     @Override
     public void create() {
-        drawer = new Drawer();
-        InGameMap.init(drawer);
-        ScoreMap.init(drawer);
         batch = new SpriteBatch();
-        person = new Person(Shape.GenerateShape());
-        nextShape = Shape.GenerateShape();
+        screen = new Screen(batch);
     }
 
     @Override
@@ -33,29 +24,32 @@ public class Tetris extends ApplicationAdapter {
         long timeStart = System.nanoTime();
         count ++;
 
+
         ScreenUtils.clear(1, 1, 1, 1);
         batch.begin();
 
-        if (DeadManager.lose) {
-            InGameMap.drawLose(batch);
-            ScoreMap.drawLose(batch);
-            DeadManager.waitForEnter();
-            batch.end();
+        if(!screen.startGame()){
             return;
         }
 
-        ScoreMap.update(batch, nextShape);
-        person.update(batch);
-        InGameMap.update(batch);
-
-
-        if (InGameMap.nextShape) {
-            person.changeShape(nextShape);
-            nextShape = Shape.GenerateShape();
-            InGameMap.nextShape = false;
+        if(Screen.pause){
+            screen.pause();
+            return;
         }
 
+        if(DeadManager.lose){
+            screen.updateLost();
+            return;
+        }
+
+        if(Screen.isAnimationGo){
+            screen.animateBlockDestruction();
+            return;
+        }
+
+        screen.update();
         batch.end();
+
 
         long timeEnd = System.nanoTime();
         sum += timeEnd - timeStart;

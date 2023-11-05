@@ -7,6 +7,10 @@ import com.mygdx.game.control.DeadManager;
 import com.mygdx.game.control.Person;
 import com.mygdx.game.generator.ShapeGenerator;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public abstract class Shape {
     public final Texture texture;
     public static boolean stop = false;
@@ -73,19 +77,38 @@ public abstract class Shape {
         }
     }
 
-    public static void fallBlock(SoloBlock block) {
-        while (true) {
-            if (block.y == 0) {
-                return;
+    public void fall() {
+        // Лямбды не работают!!!!!! Поэтому вот такой ужас
+        for(int j = 0; j < 4; j++){
+            for(int i = 0; i < 3; i++){
+                if(blocks[i].y > blocks[i + 1].y){
+                    SoloBlock buffer = blocks[i];
+                    blocks[i] = blocks[i + 1];
+                    blocks[i + 1] = buffer;
+                }
+            }
+        }
+
+        for(SoloBlock block: blocks){
+            if(block.y <= 0){
+                continue;
             }
 
-            if(!InGameMap.isBlockEmpty[block.x / SoloBlock.size][(block.y) / SoloBlock.size - 1]){
-                return;
-            }
+            InGameMap.decreaseLineByBlock(block.y);
+            InGameMap.isBlockEmpty[block.x / SoloBlock.size][block.y / SoloBlock.size] =  true;
 
-            block.y -= SoloBlock.size;
+            while (true){
+                if(block.y == 0 || !InGameMap.isBlockEmpty[block.x / SoloBlock.size][block.y / SoloBlock.size - 1]){
+                    InGameMap.isBlockEmpty[block.x / SoloBlock.size][block.y / SoloBlock.size] =  false;
+                    InGameMap.increaseLineByBlock(block.y);
+                    break;
+                }
+
+                block.y -= SoloBlock.size;
+            }
         }
     }
+
 
     protected boolean checkWillBeBlocked(SoloBlock block, int amount) {
         if ((block.x == InGameMap.mapSizeX - amount && amount > 0) || (block.x == 0 && amount < 0)) {
@@ -116,11 +139,12 @@ public abstract class Shape {
 
     protected boolean checkRotateIsCorrect() {
         for (SoloBlock block : blocks) {
-            if (block.y < 0 || block.x > InGameMap.mapSizeX - SoloBlock.size || block.x < 0) {
+            if (block.y < 0 || block.x > InGameMap.mapSizeX - SoloBlock.size || block.x < 0
+                    || block.y >= InGameMap.mapSizeY) {
                 return false;
             }
 
-            if(!InGameMap.isBlockEmpty[block.x / SoloBlock.size][block.y / SoloBlock.size]){
+            if (!InGameMap.isBlockEmpty[block.x / SoloBlock.size][block.y / SoloBlock.size]) {
                 return false;
             }
         }
@@ -131,7 +155,7 @@ public abstract class Shape {
     protected void checkStop() {
         for (SoloBlock block : blocks) {
 
-            if(block.y % SoloBlock.size != 0){
+            if (block.y % SoloBlock.size != 0) {
                 stop = false;
                 return;
             }
@@ -141,7 +165,7 @@ public abstract class Shape {
                 return;
             }
 
-            if(!InGameMap.isBlockEmpty[block.x / SoloBlock.size][block.y / SoloBlock.size - 1]){
+            if (!InGameMap.isBlockEmpty[block.x / SoloBlock.size][block.y / SoloBlock.size - 1]) {
                 stop = true;
                 return;
             }
@@ -149,6 +173,7 @@ public abstract class Shape {
     }
 
     protected abstract Shape getMySelf();
+
     public abstract void rotate();
 
     public SoloBlock[] getBlocks() {

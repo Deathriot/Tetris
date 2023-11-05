@@ -13,27 +13,4 @@ public class SoloBlock {
         this.x = x;
         this.y = y;
     }
-
-
-    public boolean contains(SoloBlock block) {
-        int tw = size;
-        int th = size;
-        int rw = size;
-        int rh = size;
-
-        int tx = this.x;
-        int ty = this.y;
-        int rx = block.x;
-        int ry = block.y;
-
-        rw += rx;
-        rh += ry;
-        tw += tx;
-        th += ty;
-
-        return ((rw < rx || rw > tx) &&
-                (rh < ry || rh > ty) &&
-                (tw < tx || tw > rx) &&
-                (th < ty || th > ry));
-    }
 }

@@ -2,9 +2,8 @@ package com.mygdx.game.control;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.g2d.Gdx2DPixmap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.mygdx.game.Map.Screen;
 import com.mygdx.game.model.Shape;
 import com.mygdx.game.model.SoloBlock;
 
@@ -16,9 +15,10 @@ public final class Person {
     public Person(Shape shape) {
         this.shape = shape;
     }
-    public void update(SpriteBatch batch){
+
+    public void update(SpriteBatch batch) {
         int key = getKey();
-        switch (key){
+        switch (key) {
             case Input.Keys.D:
                 shape.moveShapeX(VELOCITYX);
                 break;
@@ -31,9 +31,13 @@ public final class Person {
             case Input.Keys.R:
                 shape.rotate();
                 break;
+            case Input.Keys.SPACE:
+                Screen.pause = true;
+                stop = true;
+                break;
         }
 
-        if(stop){
+        if (stop) {
             stop = false;
             return;
         }
@@ -42,8 +46,12 @@ public final class Person {
     }
 
 
-    public void changeShape(Shape newShape){
+    public void changeShape(Shape newShape) {
         shape = newShape;
+    }
+
+    public Shape getCurrentShape() {
+        return shape;
     }
 
     private int getKey() {
@@ -53,8 +61,10 @@ public final class Person {
             return Input.Keys.S;
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
             return Input.Keys.A;
-        } else if(Gdx.input.isKeyJustPressed(Input.Keys.R)){
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
             return Input.Keys.R;
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            return Input.Keys.SPACE;
         } else {
             return 0;
         }

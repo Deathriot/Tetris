@@ -1,31 +1,35 @@
-package com.mygdx.game.Map;
+package com.mygdx.game.Map.drawer;
 
+
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.game.Map.InGameMap;
+import com.mygdx.game.Map.ScoreMap;
 import com.mygdx.game.model.SoloBlock;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ScoreDrawer {
-    private final Texture one = new Texture("1.png");
-    private final Texture two = new Texture("2.png");
-    private final Texture three = new Texture("3.png");
-    private final Texture four = new Texture("4.png");
-    private final Texture five = new Texture("5.png");
-    private final Texture six = new Texture("6.png");
-    private final Texture seven = new Texture("7.png");
-    private final Texture eight = new Texture("8.png");
-    private final Texture nine = new Texture("9.png");
-    private final Texture zero = new Texture("0.png");
-    private final Texture scoreText = new Texture("ScoreText.png");
+    private final Texture one = new Texture("numbers\\1.png");
+    private final Texture two = new Texture("numbers\\2.png");
+    private final Texture three = new Texture("numbers\\3.png");
+    private final Texture four = new Texture("numbers\\4.png");
+    private final Texture five = new Texture("numbers\\5.png");
+    private final Texture six = new Texture("numbers\\6.png");
+    private final Texture seven = new Texture("numbers\\7.png");
+    private final Texture eight = new Texture("numbers\\8.png");
+    private final Texture nine = new Texture("numbers\\9.png");
+    private final Texture zero = new Texture("numbers\\0.png");
+    private final BitmapFont scoreText = new BitmapFont(Gdx.files.internal("fonts\\font72.fnt"));
 
-    void drawScore(Integer score, SpriteBatch batch) {
+    public void drawScore(Integer score, SpriteBatch batch) {
         List<Texture> numbers = transformNumberIntoImages(score);
 
         int startX = InGameMap.mapSizeX + SoloBlock.size;
-        final int startY = ScoreMap.sizeY - 13 * SoloBlock.size;
+        final int startY = ScoreMap.sizeY - 14 * SoloBlock.size;
 
         drawScoreText(batch);
 
@@ -36,8 +40,8 @@ public class ScoreDrawer {
     }
 
     private void drawScoreText(SpriteBatch batch){
-        batch.draw(scoreText, InGameMap.mapSizeX + SoloBlock.size
-                ,ScoreMap.sizeY - 10 * SoloBlock.size, 200, 200);
+        scoreText.draw(batch, "Score:",InGameMap.mapSizeX + SoloBlock.size
+                ,ScoreMap.sizeY - 10 * SoloBlock.size);
     }
 
     private Texture getNumberImage(char number) {

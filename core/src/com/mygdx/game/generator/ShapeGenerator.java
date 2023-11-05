@@ -1,15 +1,13 @@
 package com.mygdx.game.generator;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.RandomXS128;
 import com.mygdx.game.Map.InGameMap;
 import com.mygdx.game.model.Shape;
 import com.mygdx.game.model.shapes.*;
-import org.w3c.dom.Text;
-
-import java.util.Random;
 
 public class ShapeGenerator {
-    private static final Random RND = new Random();
+    private static final RandomXS128 RND = new RandomXS128();
 
     public Shape generateShape() {
         Texture texture = generateTexture();
@@ -23,17 +21,17 @@ public class ShapeGenerator {
 
         switch (colourNumber) {
             case 0:
-                return new Texture("Tetris-Red.png");
+                return new Texture("tetrisBlocks\\Tetris-Red.png");
             case 1:
-                return new Texture("Tetris-Blue.png");
+                return new Texture("tetrisBlocks\\Tetris-Blue.png");
             case 2:
-                return new Texture("Tetris-Green.png");
+                return new Texture("tetrisBlocks\\Tetris-Green.png");
             case 3:
-                return new Texture("Tetris-Orange.png");
+                return new Texture("tetrisBlocks\\Tetris-Orange.png");
             case 4:
-                return new Texture("Tetris-Purpule.png");
+                return new Texture("tetrisBlocks\\Tetris-Purpule.png");
             case 5:
-                return new Texture("Tetris-Yellow.png");
+                return new Texture("tetrisBlocks\\Tetris-Yellow.png");
             default:
                 throw new RuntimeException("Ошибка в генераторе выдачи цвета");
         }
@@ -52,6 +50,7 @@ public class ShapeGenerator {
 
     private Shape createRandomShape(Texture texture, int startX) {
         int numberShape = RND.nextInt(6);
+        //int numberShape = 0;
 
         switch (numberShape) {
             case 0:

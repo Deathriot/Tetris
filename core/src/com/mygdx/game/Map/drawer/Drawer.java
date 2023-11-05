@@ -1,20 +1,29 @@
-package com.mygdx.game.Map;
+package com.mygdx.game.Map.drawer;
 
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.game.Map.InGameMap;
+import com.mygdx.game.Map.ScoreMap;
 import com.mygdx.game.model.Shape;
 import com.mygdx.game.model.SoloBlock;
 
 import java.util.Set;
 
 public class Drawer {
-    private final static Texture greyPixel = new Texture("GreyPixel.jpg");
-    private final static Texture losePicture = new Texture("JumpScare.jpg");
-    private final static Texture funnyLosePicture = new Texture("ButtonEnter.jpg");
-    private final static Texture blackPixel = new Texture("BlackLargePixel.jpg");
-    private final static Texture lox = new Texture("Lox.png");
+    private final Texture greyPixel;
+    private final static Texture losePicture = new Texture("endGame\\JumpScare.jpg");
+    private final static Texture blackPixel = new Texture(new Pixmap(5, 5, Pixmap.Format.RGB888));
+    private final static Texture lox = new Texture("endGame\\Lox.png");
 
-    void drawMap(Set<Shape> shapes, SpriteBatch batch) {
+    public Drawer() {
+        Pixmap greyPixel = new Pixmap(1,1, Pixmap.Format.RGB888);
+        greyPixel.setColor(0.8f,0.8f,0.8f,0.95f);
+        greyPixel.fillRectangle(0,0,1,1);
+        this.greyPixel = new Texture(greyPixel);
+    }
+
+    public void drawMap(Set<Shape> shapes, SpriteBatch batch) {
         drawShapes(shapes, batch);
 
         for (int x = 0; x <= InGameMap.mapSizeX; x += 50) {
@@ -24,19 +33,14 @@ public class Drawer {
         }
     }
 
-    void drawLose(SpriteBatch batch) {
+    public void drawLose(SpriteBatch batch) {
         batch.draw(losePicture, 0, InGameMap.mapSizeY - 850);
         batch.draw(lox, 530, 720);
     }
-
-    void drawButton(SpriteBatch batch) {
-        batch.draw(funnyLosePicture, 100, 50, 300, 100);
-    }
-
-    void drawShapes(Set<Shape> shapes, SpriteBatch batch) {
+    public void drawShapes(Set<Shape> shapes, SpriteBatch batch) {
         for (Shape shape : shapes) {
             for (SoloBlock block : shape.getBlocks()) {
-                if(block.x == - 50){
+                if (block.x == -50) {
                     continue;
                 }
                 batch.draw(block.texture, block.x, block.y, SoloBlock.size, SoloBlock.size);
@@ -44,7 +48,7 @@ public class Drawer {
         }
     }
 
-    void drawLinesInCorner(SpriteBatch batch){
+    public void drawLinesInCorner(SpriteBatch batch) {
         int lineSize = 20;
 
         int startX = InGameMap.mapSizeX;
@@ -62,12 +66,12 @@ public class Drawer {
         }
     }
 
-    void drawNextShape(Shape shape, SpriteBatch batch) {
+    public void drawNextShape(Shape shape, SpriteBatch batch) {
         int addXForNextShape = InGameMap.mapSizeX - shape.getStartX() + 5 * SoloBlock.size;
 
         for (SoloBlock block : shape.getBlocks()) {
             batch.draw(block.texture, block.x + addXForNextShape
-                    ,block.y - SoloBlock.size, SoloBlock.size, SoloBlock.size);
+                    , block.y - SoloBlock.size, SoloBlock.size, SoloBlock.size);
         }
     }
 }

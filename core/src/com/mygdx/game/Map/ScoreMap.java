@@ -1,10 +1,9 @@
 package com.mygdx.game.Map;
 
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.model.Shape;
-import com.sun.org.apache.xerces.internal.impl.xs.opti.DefaultText;
-import org.w3c.dom.Text;
+import com.mygdx.game.Map.drawer.Drawer;
+import com.mygdx.game.Map.drawer.ScoreDrawer;
 
 public final class ScoreMap {
     public final static int sizeX = InGameMap.mapSizeX + 300;
