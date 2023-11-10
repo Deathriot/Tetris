@@ -55,13 +55,15 @@ public class TextInput {
     private final Texture verticalLine;
     private int EraseFrame = 0;
     private int frame;
-    private int pointerPos = 0;
+    private int pointerPos;
     public boolean isTyping = true;
 
-    public TextInput(SpriteBatch batch, BitmapFont font) {
+    public TextInput(SpriteBatch batch, BitmapFont font, String currentName) {
         this.batch = batch;
         this.font = font;
         this.sb = new StringBuilder();
+        sb.append(currentName);
+        pointerPos = sb.length();
 
         Pixmap black = new Pixmap(600, 4, Pixmap.Format.RGB888);
         black.setColor(Color.BLACK);

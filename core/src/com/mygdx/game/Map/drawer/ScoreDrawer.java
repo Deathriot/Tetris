@@ -23,15 +23,21 @@ public class ScoreDrawer {
     private final Texture eight = new Texture("numbers\\8.png");
     private final Texture nine = new Texture("numbers\\9.png");
     private final Texture zero = new Texture("numbers\\0.png");
-    private final BitmapFont scoreText = new BitmapFont(Gdx.files.internal("fonts\\font72.fnt"));
+    private final BitmapFont scoreText;
+    private final SpriteBatch batch;
 
-    public void drawScore(Integer score, SpriteBatch batch) {
+    public ScoreDrawer(SpriteBatch batch, BitmapFont font72) {
+        this.batch = batch;
+        this.scoreText = font72;
+    }
+
+    public void drawScore(Integer score) {
         List<Texture> numbers = transformNumberIntoImages(score);
 
         int startX = InGameMap.mapSizeX + SoloBlock.size;
         final int startY = ScoreMap.sizeY - 14 * SoloBlock.size;
 
-        drawScoreText(batch);
+        drawScoreText();
 
         for (Texture number : numbers) {
             batch.draw(number, startX, startY);
@@ -39,7 +45,7 @@ public class ScoreDrawer {
         }
     }
 
-    private void drawScoreText(SpriteBatch batch){
+    private void drawScoreText(){
         scoreText.draw(batch, "Score:",InGameMap.mapSizeX + SoloBlock.size
                 ,ScoreMap.sizeY - 10 * SoloBlock.size);
     }

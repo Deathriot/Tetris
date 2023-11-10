@@ -60,7 +60,7 @@ public final class DeadManager {
         InGameMap.reset();
         ScoreMap.reset();
         action = ButtonAction.NOTHING;
-        StartGameManager.loadScore();
+        StartGameManager.load();
     }
 
     private static void returnMenu(){
@@ -70,7 +70,7 @@ public final class DeadManager {
         InGameMap.reset();
         ScoreMap.reset();
         action = ButtonAction.NOTHING;
-        StartGameManager.loadScore();
+        StartGameManager.load();
     }
     private static void saveScore(){
         String playerName = StartGameManager.getPlayerName();

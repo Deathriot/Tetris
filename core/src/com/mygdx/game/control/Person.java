@@ -29,7 +29,7 @@ public final class Person {
                 shape.update(batch);
                 break;
             case Input.Keys.R:
-                shape.rotate();
+                shape = shape.testRotate();
                 break;
             case Input.Keys.SPACE:
                 Screen.pause = true;
@@ -45,7 +45,6 @@ public final class Person {
         shape.update(batch);
     }
 
-
     public void changeShape(Shape newShape) {
         shape = newShape;
     }
@@ -55,18 +54,17 @@ public final class Person {
     }
 
     private int getKey() {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.D))
             return Input.Keys.D;
-        } else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.S))
             return Input.Keys.S;
-        } else if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.A))
             return Input.Keys.A;
-        } else if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.R))
             return Input.Keys.R;
-        } else if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
             return Input.Keys.SPACE;
-        } else {
-            return 0;
-        }
+
+        return 0;
     }
 }

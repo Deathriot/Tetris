@@ -15,17 +15,20 @@ public class Square extends Shape {
         blocks[2] = new SoloBlock(texture, startX - 2 * SoloBlock.size, InGameMap.mapSizeY - SoloBlock.size);
         blocks[3] = new SoloBlock(texture, startX - SoloBlock.size, InGameMap.mapSizeY - SoloBlock.size);
 
+        axisRotationBlock = blocks[2];
+
         //[2][3]
         //[0][1]
     }
 
     @Override
-    protected Shape getMySelf() {
-        return this;
-    }
+    protected Shape getCopy() {
+        Shape newShape = new Square(texture, startX);
+        for(int i = 0; i < blocks.length; i++){
+            newShape.getBlocks()[i] = blocks[i].getCopy();
+        }
 
-    @Override
-    public void rotate() {
-        // nothing, can't rotate
+        newShape.axisRotationBlock = newShape.getBlocks()[2];
+        return newShape;
     }
 }

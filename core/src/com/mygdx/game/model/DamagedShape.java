@@ -42,12 +42,7 @@ public class DamagedShape extends Shape {
     }
 
     @Override
-    protected Shape getMySelf() {
+    protected Shape getCopy() {
         return this;
-    }
-
-    @Override
-    public void rotate() {
-        // nothing
     }
 }

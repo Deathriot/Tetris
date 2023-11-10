@@ -8,28 +8,30 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.Map.InGameMap;
 import com.mygdx.game.control.buttons.*;
+import com.mygdx.game.control.buttons.startGame.*;
 import com.mygdx.game.tools.TextInput;
 
 import java.util.*;
 
 public class StartGameManager {
-    private static SpriteBatch batch;
     public static boolean isGameStarted = false;
+    private static SpriteBatch batch;
+    private static BitmapFont font32;
+    private static String highScore;
+    private static TextInput input;
     private static final Vector2 cursorPosition = new Vector2(0, 0);
     private static final Texture tetrisTheme = new Texture("startGame\\Tetris.png");
     private static final Button[] buttons = {new StartGameButton(), new InsertNameButton(), new HighScoreButton()};
-    private static BitmapFont font32;
     private static ButtonAction action = ButtonAction.NOTHING;
-    private static String highScore;
-    private static TextInput input;
-    private static String playerName = null;
+
+    private static String playerName;
 
     public static void init(BitmapFont font_32, SpriteBatch _batch) {
-        loadScore();
+        load();
         batch = _batch;
         font32 = font_32;
 
-        input = new TextInput(batch, font32);
+        input = new TextInput(batch, font32, playerName);
     }
 
     public static void update() {
@@ -68,6 +70,7 @@ public class StartGameManager {
         }
         else{
             playerName = input.getName();
+            Gdx.files.local("startGame\\CurrentPlayer.txt").writeString(playerName, false);
             input.isTyping = true;
             action = ButtonAction.NOTHING;
         }
@@ -87,10 +90,11 @@ public class StartGameManager {
         }
     }
 
-    public static void loadScore(){
+    public static void load(){
         String score = Gdx.files.local("startGame\\Scores.txt").readString();
         HashMap<String, Integer> scoreByName = parseScore(score);
         highScore = getSortedHighScore(scoreByName);
+        playerName = Gdx.files.local("startGame\\CurrentPlayer.txt").readString();
     }
     private static void getPosition() {
         cursorPosition.x = Gdx.input.getX();
@@ -150,7 +154,6 @@ public class StartGameManager {
             }
         }
 
-        System.out.println(sortedMap);
         int i = 1;
 
         for(String name: sortedMap.keySet()){

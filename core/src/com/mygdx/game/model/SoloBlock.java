@@ -13,4 +13,8 @@ public class SoloBlock {
         this.x = x;
         this.y = y;
     }
+
+    public SoloBlock getCopy() {
+        return new SoloBlock(texture, x, y);
+    }
 }

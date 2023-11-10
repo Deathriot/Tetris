@@ -55,7 +55,7 @@ public class Tetris extends ApplicationAdapter {
         sum += timeEnd - timeStart;
 
         if(count == 600){
-            System.out.println(sum / 10);
+            //System.out.println(sum / 10);
             count = 0;
             sum = 0;
         }

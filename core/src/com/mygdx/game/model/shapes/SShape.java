@@ -5,30 +5,33 @@ import com.mygdx.game.Map.InGameMap;
 import com.mygdx.game.model.Shape;
 import com.mygdx.game.model.SoloBlock;
 
-// Фигура - колбаса
-public class Line extends Shape {
-    public Line(Texture texture, int startX) {
+public class SShape extends Shape {
+
+    public SShape(Texture texture, int startX) {
         super(texture, startX);
+
         id = nextId;
 
-        blocks[0] = new SoloBlock(texture, startX - 4 * SoloBlock.size, InGameMap.mapSizeY - SoloBlock.size);
-        blocks[1] = new SoloBlock(texture, startX - 3 * SoloBlock.size, InGameMap.mapSizeY - SoloBlock.size);
+        blocks[0] = new SoloBlock(texture, startX - 3 * SoloBlock.size, InGameMap.mapSizeY - 2 * SoloBlock.size);
+        blocks[1] = new SoloBlock(texture, startX - 2 * SoloBlock.size, InGameMap.mapSizeY - 2 * SoloBlock.size);
         blocks[2] = new SoloBlock(texture, startX - 2 * SoloBlock.size, InGameMap.mapSizeY - SoloBlock.size);
         blocks[3] = new SoloBlock(texture, startX - SoloBlock.size, InGameMap.mapSizeY - SoloBlock.size);
 
         axisRotationBlock = blocks[1];
 
-        // [0][1][2][3]
+        //   [2][3]
+        //[0][1]
     }
 
     @Override
     protected Shape getCopy() {
-        Shape newShape = new Line(texture, startX);
+        Shape newShape = new SShape(texture, startX);
         for(int i = 0; i < blocks.length; i++){
             newShape.getBlocks()[i] = blocks[i].getCopy();
         }
 
-        newShape.axisRotationBlock = newShape.getBlocks()[1];
+        newShape.axisRotationBlock = newShape.getBlocks()[2];
         return newShape;
     }
 }
+

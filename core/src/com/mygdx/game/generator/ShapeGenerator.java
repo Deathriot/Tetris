@@ -49,7 +49,7 @@ public class ShapeGenerator {
     }
 
     private Shape createRandomShape(Texture texture, int startX) {
-        int numberShape = RND.nextInt(6);
+        int numberShape = RND.nextInt(7);
         //int numberShape = 0;
 
         switch (numberShape) {
@@ -58,13 +58,15 @@ public class ShapeGenerator {
             case 1:
                 return new Square(texture, startX);
             case 2:
-                return new ZetShape(texture, startX);
+                return new SShape(texture, startX);
             case 3:
                 return new LShape(texture, startX);
             case 4:
                 return new JShape(texture, startX);
             case 5:
                 return new TShape(texture, startX);
+            case 6:
+                return new ZShape(texture, startX);
             default:
                 throw new RuntimeException("Сломан генератор выдачи фигур");
         }

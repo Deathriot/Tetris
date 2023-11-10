@@ -1,6 +1,5 @@
 package com.mygdx.game.Map;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.model.DamagedShape;
 import com.mygdx.game.model.Shape;
 import com.mygdx.game.model.SoloBlock;
@@ -31,7 +30,7 @@ public final class InGameMap {
         drawer = drawer1;
     }
 
-    public static void update(SpriteBatch batch) {
+    public static void update() {
 
         if (fullLines.containsValue(10)) {
             for (Integer coordinateY : fullLines.keySet()) {
@@ -45,18 +44,18 @@ public final class InGameMap {
             Screen.activateDestructionAnimation();
         }
 
-        drawer.drawMap(shapes, batch);
-        drawer.drawShapes(shapes, batch);
+        drawer.drawMap(shapes);
+        drawer.drawShapes(shapes);
     }
 
-    public static void drawShapes(SpriteBatch batch) {
-        drawer.drawMap(shapes, batch);
-        drawer.drawShapes(shapes, batch);
+    public static void drawShapes() {
+        drawer.drawMap(shapes);
+        drawer.drawShapes(shapes);
     }
 
-    public static void drawLose(SpriteBatch batch) {
-        drawer.drawMap(shapes, batch);
-        drawer.drawLose(batch);
+    public static void drawLose() {
+        drawer.drawMap(shapes);
+        drawer.drawLose();
     }
 
     public static void addStoppedShape(Shape shape) {
@@ -168,7 +167,6 @@ public final class InGameMap {
         destructionLines.clear();
     }
 
-
     public static void increaseLineByBlock(Integer key) {
         if (!fullLines.containsKey(key)) {
             fullLines.put(key, 1);
@@ -198,39 +196,9 @@ public final class InGameMap {
         nextShape = true;
     }
 
-    public static void drawArray() {
-        for (int i = 19; i >= 0; i--) {
-            for (int j = 0; j < 10; j++) {
-                if (isBlockEmpty[j][i]) {
-                    System.out.print("[0]");
-                } else {
-                    System.out.print("[1]");
-                }
-            }
-            System.out.println();
-        }
-        System.out.println();
-        System.out.println();
-    }
-
     private static void addShapeBlocked(Shape shape) {
         for (SoloBlock block : shape.getBlocks()) {
             isBlockEmpty[block.x / SoloBlock.size][block.y / SoloBlock.size] = false;
-        }
-    }
-
-    private static void checkBug(){
-
-        for (int i = 0; i < 20; i++) {
-            int count = 0;
-            for (int j = 0; j < 10; j++) {
-                if(!isBlockEmpty[j][i]){
-                    count++;
-                }
-            }
-            if(fullLines.get(i * SoloBlock.size) != null && fullLines.get(i * SoloBlock.size) != count){
-                throw new RuntimeException();
-            }
         }
     }
     private InGameMap() {

@@ -1,8 +1,11 @@
 abbabaabbabbaabbabab-18
 TEST-10
+Anonymus-5
 qq-4
+Tima-4
 PAPA-3
 PRIVET-2
 100 percent-1
 ZERO-0
 test-0
+hello-0

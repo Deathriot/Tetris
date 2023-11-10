@@ -1,8 +1,8 @@
-package com.mygdx.game.control.buttons;
+package com.mygdx.game.control.buttons.startGame;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.mygdx.game.control.StartGameManager;
-
+import com.mygdx.game.control.buttons.Button;
+import com.mygdx.game.control.buttons.ButtonAction;
 public class StartGameButton extends Button{
 
     public StartGameButton() {

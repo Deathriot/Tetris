@@ -15,16 +15,18 @@ public class Drawer {
     private final static Texture losePicture = new Texture("endGame\\JumpScare.jpg");
     private final static Texture blackPixel = new Texture(new Pixmap(5, 5, Pixmap.Format.RGB888));
     private final static Texture lox = new Texture("endGame\\Lox.png");
+    private final SpriteBatch batch;
 
-    public Drawer() {
-        Pixmap greyPixel = new Pixmap(1,1, Pixmap.Format.RGB888);
-        greyPixel.setColor(0.8f,0.8f,0.8f,0.95f);
-        greyPixel.fillRectangle(0,0,1,1);
+    public Drawer(SpriteBatch batch) {
+        this.batch = batch;
+        Pixmap greyPixel = new Pixmap(1, 1, Pixmap.Format.RGB888);
+        greyPixel.setColor(0.8f, 0.8f, 0.8f, 0.95f);
+        greyPixel.fillRectangle(0, 0, 1, 1);
         this.greyPixel = new Texture(greyPixel);
     }
 
-    public void drawMap(Set<Shape> shapes, SpriteBatch batch) {
-        drawShapes(shapes, batch);
+    public void drawMap(Set<Shape> shapes) {
+        drawShapes(shapes);
 
         for (int x = 0; x <= InGameMap.mapSizeX; x += 50) {
             for (int y = 0; y <= InGameMap.mapSizeY; y++) {
@@ -33,11 +35,12 @@ public class Drawer {
         }
     }
 
-    public void drawLose(SpriteBatch batch) {
+    public void drawLose() {
         batch.draw(losePicture, 0, InGameMap.mapSizeY - 800);
         batch.draw(lox, 530, 720);
     }
-    public void drawShapes(Set<Shape> shapes, SpriteBatch batch) {
+
+    public void drawShapes(Set<Shape> shapes) {
         for (Shape shape : shapes) {
             for (SoloBlock block : shape.getBlocks()) {
                 if (block.x == -50) {
@@ -48,7 +51,7 @@ public class Drawer {
         }
     }
 
-    public void drawLinesInCorner(SpriteBatch batch) {
+    public void drawLinesInCorner() {
         int lineSize = 20;
 
         int startX = InGameMap.mapSizeX;
@@ -66,12 +69,18 @@ public class Drawer {
         }
     }
 
-    public void drawNextShape(Shape shape, SpriteBatch batch) {
+    public void drawNextShape(Shape shape) {
         int addXForNextShape = InGameMap.mapSizeX - shape.getStartX() + 5 * SoloBlock.size;
 
         for (SoloBlock block : shape.getBlocks()) {
             batch.draw(block.texture, block.x + addXForNextShape
                     , block.y - SoloBlock.size, SoloBlock.size, SoloBlock.size);
+        }
+    }
+
+    public void drawShape(Shape shape) {
+        for (SoloBlock block : shape.getBlocks()) {
+            batch.draw(block.texture, block.x, block.y, SoloBlock.size, SoloBlock.size);
         }
     }
 }
