@@ -22,7 +22,7 @@ public class StartGameManager {
     private static ButtonAction action = ButtonAction.NOTHING;
     private static String highScore;
     private static TextInput input;
-    private static String playerName = "";
+    private static String playerName = null;
 
     public static void init(BitmapFont font_32, SpriteBatch _batch) {
         loadScore();
@@ -36,8 +36,8 @@ public class StartGameManager {
         batch.draw(tetrisTheme, 150, 800);
 
         if (action.equals(ButtonAction.NOTHING)) {
-            if(!playerName.isEmpty()){
-                font32.draw(batch, "Player: " + playerName, 250, 700);
+            if(playerName != null && !playerName.isEmpty()){
+                font32.draw(batch, "Player: " + playerName, 100, 700);
             }
             getPosition();
             for (Button button : buttons) {
@@ -77,7 +77,7 @@ public class StartGameManager {
         if (highScore == null || highScore.isEmpty()) {
             font32.draw(batch, "No records here!", 200, 500);
         } else {
-            font32.draw(batch, highScore, 200, 800);
+            font32.draw(batch, highScore, 180, 800);
         }
 
         font32.draw(batch, "Press esc to exit", 50, 50);
@@ -129,6 +129,8 @@ public class StartGameManager {
             return null;
         }
 
+        Gdx.files.local("startGame\\Scores.txt").writeString("", false);
+
         StringBuilder sb = new StringBuilder();
         List<Integer> numbers = new ArrayList<>(score.values());
         Collections.sort(numbers);
@@ -138,25 +140,33 @@ public class StartGameManager {
             sortedNumbers.add(numbers.get(i));
         }
 
+        LinkedHashMap<String, Integer> sortedMap = new LinkedHashMap<>();
+
+        for(Integer number: sortedNumbers){
+            for(String name: score.keySet()){
+                if(score.get(name) == number){
+                    sortedMap.put(name, number);
+                }
+            }
+        }
+
+        System.out.println(sortedMap);
         int i = 1;
-        loop:
-        for (Integer number : sortedNumbers) {
-            if (i == 11) {
+
+        for(String name: sortedMap.keySet()){
+            if(i == 16){
                 break;
             }
 
-            for (String name : score.keySet()) {
-                if (score.get(name) == number) {
-                    sb.append(i);
-                    sb.append(". ");
-                    sb.append(name);
-                    sb.append(" - ");
-                    sb.append(number);
-                    sb.append("\n");
-                    i++;
-                    continue loop;
-                }
-            }
+            Integer number = sortedMap.get(name);
+            sb.append(i);
+            sb.append(". ");
+            sb.append(name);
+            sb.append(" - ");
+            sb.append(number);
+            sb.append("\n");
+            i++;
+            Gdx.files.local("startGame\\Scores.txt").writeString(name + "-" + number.toString() + "\n", true);
         }
 
         return sb.toString();

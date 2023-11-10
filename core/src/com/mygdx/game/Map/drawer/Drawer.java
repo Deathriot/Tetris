@@ -34,7 +34,7 @@ public class Drawer {
     }
 
     public void drawLose(SpriteBatch batch) {
-        batch.draw(losePicture, 0, InGameMap.mapSizeY - 850);
+        batch.draw(losePicture, 0, InGameMap.mapSizeY - 800);
         batch.draw(lox, 530, 720);
     }
     public void drawShapes(Set<Shape> shapes, SpriteBatch batch) {

@@ -1,6 +1,7 @@
 package com.mygdx.game.tools;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -8,89 +9,171 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class TextInput {
-    public static final int NUM_0 = 7;
-    public static final int NUM_1 = 8;
-    public static final int NUM_2 = 9;
-    public static final int NUM_3 = 10;
-    public static final int NUM_4 = 11;
-    public static final int NUM_5 = 12;
-    public static final int NUM_6 = 13;
-    public static final int NUM_7 = 14;
-    public static final int NUM_8 = 15;
-    public static final int NUM_9 = 16;
-    public static final int A = 29;
-    public static final int B = 30;
-    public static final int C = 31;
-    public static final int D = 32;
-    public static final int BACKSPACE = 67;
-    public static final int E = 33;
-    public static final int ENTER = 66;
-    public static final int F = 34;
-    public static final int G = 35;
-    public static final int H = 36;
-    public static final int I = 37;
-    public static final int J = 38;
-    public static final int K = 39;
-    public static final int L = 40;
-    public static final int M = 41;
-    public static final int N = 42;
-    public static final int O = 43;
-    public static final int P = 44;
-    public static final int Q = 45;
-    public static final int R = 46;
-    public static final int S = 47;
-    public static final int SPACE = 62;
-    public static final int T = 48;
-    public static final int U = 49;
-    public static final int V = 50;
-    public static final int W = 51;
-    public static final int X = 52;
-    public static final int Y = 53;
-    public static final int Z = 54;
+    private static final int NUM_0 = 7;
+    private static final int NUM_1 = 8;
+    private static final int NUM_2 = 9;
+    private static final int NUM_3 = 10;
+    private static final int NUM_4 = 11;
+    private static final int NUM_5 = 12;
+    private static final int NUM_6 = 13;
+    private static final int NUM_7 = 14;
+    private static final int NUM_8 = 15;
+    private static final int NUM_9 = 16;
+    private static final int A = 29;
+    private static final int B = 30;
+    private static final int C = 31;
+    private static final int D = 32;
+    private static final int BACKSPACE = 67;
+    private static final int E = 33;
+    private static final int ENTER = 66;
+    private static final int F = 34;
+    private static final int G = 35;
+    private static final int H = 36;
+    private static final int I = 37;
+    private static final int J = 38;
+    private static final int K = 39;
+    private static final int L = 40;
+    private static final int M = 41;
+    private static final int N = 42;
+    private static final int O = 43;
+    private static final int P = 44;
+    private static final int Q = 45;
+    private static final int R = 46;
+    private static final int S = 47;
+    private static final int SPACE = 62;
+    private static final int T = 48;
+    private static final int U = 49;
+    private static final int V = 50;
+    private static final int W = 51;
+    private static final int X = 52;
+    private static final int Y = 53;
+    private static final int Z = 54;
     private final SpriteBatch batch;
     private final BitmapFont font;
     private final StringBuilder sb;
-    public boolean isTyping = true;
     private final Texture line;
+    private final Texture verticalLine;
+    private int EraseFrame = 0;
+    private int frame;
+    private int pointerPos = 0;
+    public boolean isTyping = true;
 
     public TextInput(SpriteBatch batch, BitmapFont font) {
         this.batch = batch;
         this.font = font;
         this.sb = new StringBuilder();
 
-        Pixmap pixmap = new Pixmap(600, 5, Pixmap.Format.RGB888);
-        pixmap.setColor(Color.BLACK);
-        pixmap.fillRectangle(0,0,800,5);
-        line = new Texture(pixmap);
+        Pixmap black = new Pixmap(600, 4, Pixmap.Format.RGB888);
+        black.setColor(Color.BLACK);
+        black.fillRectangle(0, 0, 800, 5);
+        line = new Texture(black);
+
+        Pixmap grey = new Pixmap(2, 30, Pixmap.Format.RGB888);
+        grey.setColor(Color.BLACK);
+        grey.fillRectangle(0, 0, 2, 30);
+        verticalLine = new Texture(grey);
     }
 
     public void update() {
         batch.draw(line, 100, 210);
         font.draw(batch, "Please write your name", 170, 700);
         font.draw(batch, sb.toString(), 150, 250);
+        drawPointer();
 
         String symb = getStringKey();
-        if(!symb.isEmpty() && sb.length() < 25){
-            sb.append(symb);
-        }
-
-        if(Gdx.input.isKeyJustPressed(BACKSPACE)){
-            if(sb.length() > 0){
-                sb.deleteCharAt(sb.length() - 1);
+        if (!symb.isEmpty() && sb.length() < 20) {
+            if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
+                sb.insert(pointerPos, symb);
+            } else {
+                sb.insert(pointerPos, symb.toLowerCase());
             }
+
+            movePointerRight();
         }
 
-        if(Gdx.input.isKeyJustPressed(ENTER)){
+        erase();
+
+        if (Gdx.input.isKeyJustPressed(ENTER)) {
             isTyping = false;
         }
     }
 
-    public String getName(){
+    private void drawPointer() {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) {
+            movePointerLeft();
+            frame = 0;
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) {
+            movePointerRight();
+            frame = 0;
+        }
+
+        frame++;
+        if (frame % 60 < 30) {
+            batch.draw(verticalLine, pointerPos * 21 + 170 - 21, 223);
+        }
+    }
+
+    private void erase() {
+        if (pointerPos > 0) {
+            if (Gdx.input.isKeyJustPressed(BACKSPACE)) {
+                sb.deleteCharAt(pointerPos - 1);
+                movePointerLeft();
+                EraseFrame = 0;
+            }
+
+            if (Gdx.input.isKeyPressed(BACKSPACE)) {
+                EraseFrame++;
+
+                if (EraseFrame > 5) {
+                    sb.deleteCharAt(pointerPos - 1);
+                    movePointerLeft();
+                    EraseFrame = 0;
+                }
+            }
+        }
+
+        if (pointerPos >= sb.length()) {
+            return;
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.FORWARD_DEL)) {
+            sb.deleteCharAt(pointerPos);
+            EraseFrame = 0;
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.FORWARD_DEL)) {
+            EraseFrame++;
+
+            if (EraseFrame > 5) {
+                sb.deleteCharAt(pointerPos);
+                EraseFrame = 0;
+            }
+        }
+    }
+
+    private void movePointerRight() {
+        if (pointerPos >= sb.length()) {
+            return;
+        }
+
+        pointerPos++;
+    }
+
+    private void movePointerLeft() {
+        if (pointerPos <= 0) {
+            return;
+        }
+
+        pointerPos--;
+    }
+
+    public String getName() {
         return sb.toString();
     }
 
     private String getStringKey() {
-
         if (Gdx.input.isKeyJustPressed(NUM_0))
             return "0";
         if (Gdx.input.isKeyJustPressed(NUM_1))

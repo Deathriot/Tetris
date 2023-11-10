@@ -18,18 +18,16 @@ import java.util.List;
 public class Screen {
     public static boolean isAnimationGo = false;
     public static boolean pause = false;
-    private static int startY;
-    private static int endY;
     private final SpriteBatch batch;
     private Shape nextShape;
     private final Person person;
-    private static final BitmapFont font72 = new BitmapFont(Gdx.files.internal("fonts\\font72.fnt"));
+    private static final BitmapFont font72 = new BitmapFont(Gdx.files.local("fonts\\font72.fnt"));
     private static List<Integer> destructedLines;
 
 
     public Screen(SpriteBatch batch) {
         Drawer drawer = new Drawer();
-        BitmapFont font32 = new BitmapFont(Gdx.files.internal("fonts\\font32.fnt"));
+        BitmapFont font32 = new BitmapFont(Gdx.files.local("fonts\\font32.fnt"));
 
         StartGameManager.init(font32, batch);
         DeadManager.init(batch);
