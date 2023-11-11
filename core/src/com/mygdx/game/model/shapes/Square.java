@@ -10,12 +10,12 @@ public class Square extends Shape {
         super(texture, startX);
         id = nextId;
 
-        blocks[0] = new SoloBlock(texture, startX - 2 * SoloBlock.size, InGameMap.mapSizeY - 2 * SoloBlock.size);
-        blocks[1] = new SoloBlock(texture, startX - SoloBlock.size, InGameMap.mapSizeY - 2 * SoloBlock.size);
-        blocks[2] = new SoloBlock(texture, startX - 2 * SoloBlock.size, InGameMap.mapSizeY - SoloBlock.size);
-        blocks[3] = new SoloBlock(texture, startX - SoloBlock.size, InGameMap.mapSizeY - SoloBlock.size);
+        blocks.add(new SoloBlock(texture, startX - 2 * SoloBlock.size, InGameMap.mapSizeY - 2 * SoloBlock.size));
+        blocks.add(new SoloBlock(texture, startX - SoloBlock.size, InGameMap.mapSizeY - 2 * SoloBlock.size));
+        blocks.add(new SoloBlock(texture, startX - 2 * SoloBlock.size, InGameMap.mapSizeY - SoloBlock.size));
+        blocks.add(new SoloBlock(texture, startX - SoloBlock.size, InGameMap.mapSizeY - SoloBlock.size));
 
-        axisRotationBlock = blocks[2];
+        axisRotationBlock = blocks.get(1);
 
         //[2][3]
         //[0][1]
@@ -24,11 +24,12 @@ public class Square extends Shape {
     @Override
     protected Shape getCopy() {
         Shape newShape = new Square(texture, startX);
-        for(int i = 0; i < blocks.length; i++){
-            newShape.getBlocks()[i] = blocks[i].getCopy();
+        newShape.getBlocks().clear();
+        for(SoloBlock block: blocks){
+            newShape.getBlocks().add(block.getCopy());
         }
 
-        newShape.axisRotationBlock = newShape.getBlocks()[2];
+        newShape.axisRotationBlock = newShape.getBlocks().get(1);
         return newShape;
     }
 }

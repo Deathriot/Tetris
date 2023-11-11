@@ -11,6 +11,9 @@ public final class Person {
     private final static int VELOCITYX = SoloBlock.size;
     private Shape shape;
     public static boolean stop = false;
+    private int frameRight = 0;
+    private int frameLeft = 0;
+    private final static int framesDelay = 8;
 
     public Person(Shape shape) {
         this.shape = shape;
@@ -29,7 +32,7 @@ public final class Person {
                 shape.update(batch);
                 break;
             case Input.Keys.R:
-                shape = shape.testRotate();
+                shape = shape.rotate();
                 break;
             case Input.Keys.SPACE:
                 Screen.pause = true;
@@ -54,6 +57,23 @@ public final class Person {
     }
 
     private int getKey() {
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+            frameRight++;
+            if (frameRight >= framesDelay) {
+                return Input.Keys.D;
+            }
+        } else{
+            frameRight = 0;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+            frameLeft++;
+            if (frameLeft >= framesDelay) {
+                return Input.Keys.A;
+            }
+        } else{
+            frameLeft = 0;
+        }
+
         if (Gdx.input.isKeyJustPressed(Input.Keys.D))
             return Input.Keys.D;
         if (Gdx.input.isKeyPressed(Input.Keys.S))

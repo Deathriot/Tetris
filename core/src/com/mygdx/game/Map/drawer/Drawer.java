@@ -43,9 +43,6 @@ public class Drawer {
     public void drawShapes(Set<Shape> shapes) {
         for (Shape shape : shapes) {
             for (SoloBlock block : shape.getBlocks()) {
-                if (block.x == -50) {
-                    continue;
-                }
                 batch.draw(block.texture, block.x, block.y, SoloBlock.size, SoloBlock.size);
             }
         }

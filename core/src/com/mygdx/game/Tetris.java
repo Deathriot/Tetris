@@ -5,7 +5,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.Map.Screen;
 import com.mygdx.game.control.DeadManager;
-import com.mygdx.game.control.StartGameManager;
+
+import java.awt.*;
 
 public class Tetris extends ApplicationAdapter {
     SpriteBatch batch;
@@ -23,7 +24,6 @@ public class Tetris extends ApplicationAdapter {
     public void render() {
         long timeStart = System.nanoTime();
         count ++;
-
 
         ScreenUtils.clear(1, 1, 1, 1);
         batch.begin();

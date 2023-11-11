@@ -65,15 +65,15 @@ public class TextInput {
         sb.append(currentName);
         pointerPos = sb.length();
 
-        Pixmap black = new Pixmap(600, 4, Pixmap.Format.RGB888);
-        black.setColor(Color.BLACK);
-        black.fillRectangle(0, 0, 800, 5);
-        line = new Texture(black);
+        Pixmap blackLine = new Pixmap(600, 4, Pixmap.Format.RGB888);
+        blackLine.setColor(Color.BLACK);
+        blackLine.fillRectangle(0, 0, 800, 5);
+        line = new Texture(blackLine);
 
-        Pixmap grey = new Pixmap(2, 30, Pixmap.Format.RGB888);
-        grey.setColor(Color.BLACK);
-        grey.fillRectangle(0, 0, 2, 30);
-        verticalLine = new Texture(grey);
+        Pixmap blackVerticalLine = new Pixmap(2, 30, Pixmap.Format.RGB888);
+        blackVerticalLine.setColor(Color.BLACK);
+        blackVerticalLine.fillRectangle(0, 0, 2, 30);
+        verticalLine = new Texture(blackVerticalLine);
     }
 
     public void update() {

@@ -1,6 +1,5 @@
 package com.mygdx.game.Map;
 
-import com.mygdx.game.model.DamagedShape;
 import com.mygdx.game.model.Shape;
 import com.mygdx.game.model.SoloBlock;
 import com.mygdx.game.Map.drawer.Drawer;
@@ -115,50 +114,27 @@ public final class InGameMap {
     }
     public static void removeLine() {
         for (Integer y : destructionLines) {
-            final HashSet<Shape> destroyedShapes = new HashSet<>();
-            final HashSet<DamagedShape> damagedShapes = new HashSet<>();
 
             for (int i = 0; i < 10; i++) {
                 isBlockEmpty[i][y / SoloBlock.size] = true;
             }
 
+            Set<Shape> removedShapes = new HashSet<>();
             loop:
             for (Shape shape : shapes) {
                 for (SoloBlock block : shape.getBlocks()) {
                     if (block.y == y) {
-                        destroyedShapes.add(shape);
-                        DamagedShape damagedShape = new DamagedShape(shape, y);
+                        shape.removeBlocks(y);
 
-                        if (lastShape == shape) {
-                            lastShape = damagedShape;
+                        if(shape.getBlocks().isEmpty()){
+                            removedShapes.add(shape);
                         }
-
-                        if (!damagedShape.shouldBeDead) {
-                            damagedShapes.add(damagedShape);
-                        }
-
                         continue loop;
                     }
                 }
             }
 
-            shapes.removeAll(destroyedShapes);
-            shapes.addAll(damagedShapes);
-
-            final HashSet<DamagedShape> doomedShapes = new HashSet<>();
-
-            for (Shape shape : shapes) {
-                if (shape instanceof DamagedShape) {
-                    DamagedShape doomedShape = (DamagedShape) shape;
-                    doomedShape.checkDeath();
-                    if (doomedShape.shouldBeDead) {
-                        doomedShapes.add(doomedShape);
-                    }
-                }
-            }
-
-            shapes.removeAll(doomedShapes);
-
+            shapes.removeAll(removedShapes);
             ScoreMap.increaseScore();
             fullLines.put(y, 0);
         }

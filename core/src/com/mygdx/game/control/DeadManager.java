@@ -9,8 +9,7 @@ import com.mygdx.game.Map.InGameMap;
 import com.mygdx.game.Map.ScoreMap;
 import com.mygdx.game.control.buttons.Button;
 import com.mygdx.game.control.buttons.ButtonAction;
-import com.mygdx.game.control.buttons.endGame.RestartButton;
-import com.mygdx.game.control.buttons.endGame.ReturnButton;
+import com.mygdx.game.control.buttons.endGame.*;
 
 public final class DeadManager {
     public static boolean lose = false;
@@ -74,7 +73,7 @@ public final class DeadManager {
     }
     private static void saveScore(){
         String playerName = StartGameManager.getPlayerName();
-        if(playerName == null){
+        if(playerName == null || playerName.isEmpty()){
             playerName = "Anonymus";
         }
 

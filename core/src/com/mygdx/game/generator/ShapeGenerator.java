@@ -42,7 +42,8 @@ public class ShapeGenerator {
         final int bound = InGameMap.mapSizeX - longestShapeLength;
 
         int randomX = RND.nextInt(bound);
-        randomX += 249;
+
+        randomX += longestShapeLength;
 
         randomX = randomX - (randomX % 50);
         return randomX;
